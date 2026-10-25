@@ -15,8 +15,13 @@ const iconMap: Record<string, ComponentType<{ size?: number }>> = {
   ruler: Ruler, thermometer: Thermometer, "file-image": Image, "list-checks": ListChecks,
 };
 
-export default function ToolDirectory({ tools }: { tools: SiteTool[] }) {
-  const [query, setQuery] = useState("");
+type ToolDirectoryProps = {
+  tools: SiteTool[];
+  initialQuery?: string;
+};
+
+export default function ToolDirectory({ tools, initialQuery = "" }: ToolDirectoryProps) {
+  const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState<(typeof toolCategories)[number]>("All tools");
   const filtered = useMemo(() => tools.filter((tool) => {
     const matchesCategory = category === "All tools" || tool.category === category;
