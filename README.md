@@ -1,90 +1,85 @@
-# SmartGuideDaily
+# SmartGuideDaily — existing-site upgrade
 
-A Next.js App Router blog starter for India and international readers. Includes a responsive homepage, article/category/search pages, metadata, sitemap, robots.txt, six seed articles, an admin publishing UI, and optional AdSense slots.
+This is the source project for SmartGuideDaily. It preserves the existing Next.js App Router blog, Supabase-backed article admin, the AdSense publisher configuration already present in the supplied source, and adds a dedicated free-tools library with 16 interactive tools.
 
-## Requirements
+## What's included
 
-- Node.js 20.9+ (recommended: current Node.js LTS)
-- npm
-- A Supabase project for persistent article publishing
-- A Vercel account for deployment
+- Responsive homepage, desktop/mobile navigation, footer, and accessible skip link.
+- Searchable/filterable `/tools` directory and individual, indexable tool pages.
+- 16 working browser-based tools: BMI, age, percentage, GST, discount, EMI, compound interest, word counter, text case converter, JSON formatter/validator, password generator, random number generator, length converter, temperature converter, image compressor, and to-do list.
+- Existing blog, category pages, article SEO metadata, related articles, seed content, and publishing dashboard.
+- About, Contact, Privacy, Terms, Disclaimer, and Editorial Policy pages.
+- Updated sitemap, robots rules, tool schema metadata, and an `/ads.txt` route that formats the publisher ID used by the site.
+- Optional manual AdSense placements. No empty manual ad units are rendered unless a real ad-slot ID is configured; AdSense Auto ads can still operate when enabled in the AdSense account.
+
+## Important: update the current Vercel project, don't create a new one
+
+The website is already deployed. This ZIP is a source-code update, not a separate deployment. **Keep the existing Vercel project and its environment variables.** Do not delete the current project or remove the site from AdSense.
+
+1. Download and extract this ZIP.
+2. Test it locally with the commands below.
+3. Update the source in the same GitHub repository currently connected to your existing Vercel project. You can replace the tracked application files with these updated files, review the diff, then commit and push to the connected branch.
+4. Vercel should deploy the commit to the same existing project. Confirm the deployment preview works before promoting it to production if preview deployments are available.
+
+If the GitHub repository already has content changes not present in this ZIP, merge carefully instead of overwriting them blindly.
 
 ## Run locally on Windows
 
-1. Extract the ZIP.
-2. Open Command Prompt in the `smartguidedaily` folder.
-3. Run:
+Requirements: Node.js 20.9+ and npm.
 
 ```cmd
 npm install
 copy .env.example .env.local
-```
-
-4. Edit `.env.local` in Notepad. Set a real `NEXT_PUBLIC_SITE_URL` later; for local development you can use `http://localhost:3000`.
-5. Set `ADMIN_PASSWORD` to a strong, unique password.
-6. Set `ADMIN_SESSION_SECRET` to at least 32 random characters.
-7. Configure Supabase as described below.
-8. Run:
-
-```cmd
 npm run dev
 ```
 
-Open `http://localhost:3000`. Admin dashboard: `http://localhost:3000/admin`.
+Open `http://localhost:3000`. Main areas to test:
 
-## Configure Supabase (required to publish persistently)
+- `/` — homepage
+- `/tools` — searchable tools directory
+- `/tools/emi-calculator` — example calculator
+- `/blog` — article list and search
+- `/admin` — publisher dashboard (requires the variables below)
 
-The included seed articles are built into the app and display without a database. Admin publishing requires Supabase so posts are saved persistently and available to visitors.
+Before deployment, also run:
 
-1. Create a project at https://supabase.com/.
-2. Open SQL Editor and run `supabase/schema.sql`.
-3. In Project Settings → API, copy the Project URL and the **service_role** key.
-4. Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.
-5. Set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`. Never commit `.env.local` or expose the service role key in browser code.
-6. Restart the dev server after changing environment variables.
+```cmd
+npm run typecheck
+npm run lint
+npm run build
+```
 
-The admin login uses a signed, HTTP-only, same-site cookie with an 8-hour expiry. This is a simple single-admin setup. For a production multi-author site, add stronger identity management, rate limiting, audit logging, and an established CMS workflow.
+## Environment variables
 
-## Deploy to Vercel
+Keep the values already configured in the current Vercel project. The `.env.example` file documents them; it is not a replacement for existing production values.
 
-1. Push the extracted project to a new GitHub repository.
-2. In Vercel, choose **Add New → Project**, import the repository, and deploy using the default Next.js settings.
-3. In Vercel Project → Settings → Environment Variables, add:
-   - `NEXT_PUBLIC_SITE_URL` = your canonical production URL (include `https://`)
-   - `NEXT_PUBLIC_SITE_NAME` = `SmartGuideDaily`
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `SUPABASE_SERVICE_ROLE_KEY` (server-only secret)
-   - `ADMIN_PASSWORD`
-   - `ADMIN_SESSION_SECRET` (32+ random characters)
-   - `NEXT_PUBLIC_ADSENSE_CLIENT` only after you have an AdSense publisher ID
-4. Redeploy after adding or changing environment variables.
-5. Add your custom domain in Vercel and update `NEXT_PUBLIC_SITE_URL` to that domain. Do not use the placeholder `.example` URL in production.
+- `NEXT_PUBLIC_SITE_URL`: the canonical public URL. The current fallback is `https://smartguideddaily.vercel.app`.
+- `NEXT_PUBLIC_SITE_NAME`: site label.
+- `NEXT_PUBLIC_ADSENSE_CLIENT`: the AdSense client ID. This source currently contains `ca-pub-6633143653612883` because that ID was present in the supplied project.
+- `NEXT_PUBLIC_ADSENSE_SLOT_CONTENT`, `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR`, `NEXT_PUBLIC_ADSENSE_SLOT_FEED`: optional real ad-unit slot IDs. Leave blank until these units are created in AdSense.
+- `NEXT_PUBLIC_CONTACT_EMAIL`: optional monitored contact address; enables the direct email-app button on the Contact page.
+- `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`: needed to persistently publish posts from the admin dashboard. The service-role key must remain server-only and must never be exposed in client code.
+- `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET`: set a strong, unique admin password and a random secret of at least 32 characters.
 
-## Google Search setup
+Do not commit `.env.local` or production secrets to GitHub. Adding/changing Vercel environment variables requires a redeployment.
 
-- Open Google Search Console and verify the custom domain.
-- Submit `https://YOUR-DOMAIN/sitemap.xml`.
-- Inspect key URLs and request indexing where appropriate.
-- Ensure published posts have original, helpful content and descriptive titles.
-- Search Console does not guarantee indexing or rankings.
+## Supabase and article publishing
 
-## Google AdSense
+The built-in seed articles display without a database. To save edits or publish from `/admin`, configure Supabase and run `supabase/schema.sql` in its SQL Editor. Set the Supabase URL and service-role key in Vercel server environment variables. The admin panel is a simple single-admin workflow; before expanding it to multiple writers or higher-risk use, add rate limiting, audit logging, and stronger authentication controls.
 
-- Apply only when the site is ready for review and complies with current publisher policies.
-- Replace the placeholder publisher ID with your actual `ca-pub-...` value only after receiving it.
-- This starter's AdSlot component is only a placeholder until an ad client is configured. You must also create real ad units and insert the correct ad slot IDs before production use; do not click your own ads.
-- Review current Google consent and privacy requirements for the regions you serve. The included privacy page is a starter template and must be customised to reflect the site's real practices.
-- Ads do not guarantee earnings. Traffic quality, visitor location, niche, ad demand, and policy compliance all affect revenue.
+## AdSense notes
 
-## Affiliate links
+- The site-level AdSense script and account metadata are configured in `app/layout.tsx` using the publisher ID already present in the supplied source.
+- `/ads.txt` is served as plain text by `app/ads.txt/route.ts` and derives the publisher number from `NEXT_PUBLIC_ADSENSE_CLIENT` (falling back to the ID present in the supplied source). Verify it matches the publisher ID shown in your AdSense account before deploying. The `ads.txt` value uses the `pub-` prefix, not `ca-pub-`.
+- After deployment, open `https://smartguideddaily.vercel.app/ads.txt` and confirm the correct line is displayed as plain text. In AdSense → Sites, use the ads.txt status/check-for-updates controls if needed; crawling and status updates can take time.
+- A publisher ID alone does not create manual ad units. Set the optional ad-slot variables only after creating the corresponding ad units. Auto ads can be configured from AdSense.
+- Do not click your own ads or ask others to do so. Follow the current AdSense policies and consent/privacy requirements for the audiences you serve.
+- The presence of this code does not mean Google has approved the website, and it does not guarantee revenue.
 
-- Apply to suitable affiliate programmes and follow each programme's rules.
-- Disclose affiliate relationships clearly near relevant links and on pages where required.
-- Recommend products honestly and only where they genuinely help the reader.
+## Search and indexing
 
-## Important production notes
+The sitemap includes the main pages, categories, published articles, and tools. In Google Search Console, submit `https://smartguideddaily.vercel.app/sitemap.xml` after deploying. Indexing and ranking are determined by Google and are not guaranteed.
 
-- The included starter articles are original drafts intended as a starting point. Fact-check and edit them before publication, especially details that can change.
-- The admin API needs rate limiting and ideally a stronger authentication setup before handling sensitive or high-traffic production use.
-- Add your real contact email and review legal pages before launch.
-- The project uses Markdown-style text rendering without raw HTML, which reduces content-injection risk.
+## Content quality and limitations
+
+The tools run client-side; the to-do list uses local browser storage, while the image compressor creates a JPEG download in the browser. Tool results are estimates and include limitations where relevant. Review calculators and content carefully before relying on them. Update the Privacy Policy to match actual service configurations, and configure a monitored email in Vercel before promising a direct response channel. The contact helper can copy a message even when direct email is not configured.

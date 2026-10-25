@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAdmin } from "@/lib/auth";
 import { deletePost, getAllAdminPosts, savePost } from "@/lib/posts";
 import { estimateReadMinutes } from "@/lib/content";
@@ -32,6 +33,11 @@ export async function POST(request: Request) {
     };
     const result = await savePost(post);
     if (!result.ok) return NextResponse.json({ error: result.error }, { status: 503 });
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${post.slug}`);
+    revalidatePath(`/category/${encodeURIComponent(post.category)}`);
+    revalidatePath("/sitemap.xml");
     return NextResponse.json({ ok: true, post });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Could not save post." }, { status: 400 });
@@ -44,5 +50,9 @@ export async function DELETE(request: Request) {
   if (!slug) return NextResponse.json({ error: "Missing slug." }, { status: 400 });
   const result = await deletePost(slug);
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 503 });
+  revalidatePath("/");
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
+  revalidatePath("/sitemap.xml");
   return NextResponse.json({ ok: true });
 }

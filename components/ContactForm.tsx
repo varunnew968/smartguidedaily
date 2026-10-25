@@ -1,0 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import { Clipboard, Mail } from "lucide-react";
+
+export default function ContactForm({ email }: { email: string }) {
+  const [name, setName] = useState(""); const [replyTo, setReplyTo] = useState(""); const [subject, setSubject] = useState("Website feedback"); const [message, setMessage] = useState(""); const [notice, setNotice] = useState("");
+  function getBody() { return `Name: ${name || "Not provided"}\nReply-to: ${replyTo || "Not provided"}\n\n${message}`; }
+  async function copyMessage() { try { await navigator.clipboard.writeText(`Subject: ${subject}\n\n${getBody()}`); setNotice("Message copied. You can paste it into an email or message."); } catch { setNotice("Copy was not available in this browser. Select and copy the message manually."); } }
+  function openEmail() { if (!email) return; window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(getBody())}`; }
+  return <div className="contact-form-card"><div className="tool-fields"><label className="tool-field"><span>Your name (optional)</span><input className="input" value={name} onChange={(e)=>setName(e.target.value)} maxLength={100}/></label><label className="tool-field"><span>Your email (optional)</span><input className="input" type="email" value={replyTo} onChange={(e)=>setReplyTo(e.target.value)} maxLength={180}/></label></div><label className="tool-field" style={{marginBottom:15}}><span>Subject</span><select className="input" value={subject} onChange={(e)=>setSubject(e.target.value)}><option>Website feedback</option><option>Report an error</option><option>Suggest a topic</option><option>Tool not working</option><option>Business enquiry</option></select></label><label className="tool-field"><span>Message</span><textarea className="input tool-textarea" rows={7} value={message} onChange={(e)=>setMessage(e.target.value)} minLength={5} maxLength={4000} placeholder="Tell us how we can improve the site…"/></label><div className="tool-button-row"><button className="btn btn-primary" type="button" disabled={message.trim().length < 5 || !email} onClick={openEmail}><Mail size={16}/> Open email app</button><button className="btn btn-outline" type="button" disabled={message.trim().length < 5} onClick={() => void copyMessage()}><Clipboard size={16}/> Copy message</button></div>{notice && <p className="tool-success" role="status">{notice}</p>}{!email && <p className="small-muted">Direct email is not enabled yet. Copying the message works without a server or account.</p>}</div>;
+}
