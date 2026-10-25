@@ -1,38 +1,96 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenCheck, Compass, Lightbulb, SearchCheck } from "lucide-react";
+import {
+  ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, Compass, FileText,
+  LockKeyhole, Search, ShieldCheck, Sparkles, Wrench, Zap
+} from "lucide-react";
 import { getPosts } from "@/lib/posts";
 import ArticleCard from "@/components/ArticleCard";
 import AdSlot from "@/components/AdSlot";
-import { categories } from "@/lib/content";
 import FeaturedTools from "@/components/FeaturedTools";
+import { tools, toolCategories } from "@/lib/tools";
 
 export default async function HomePage() {
-  const posts = (await getPosts()).slice(0, 6);
+  const posts = (await getPosts()).slice(0, 3);
+  const toolCount = tools.length;
   return <>
-    <section className="hero"><div className="container">
-      <span className="eyebrow"><Lightbulb size={14}/> Practical knowledge, made simple</span>
-      <h1>Small answers.<br/><span style={{color:"#3157d5"}}>Smarter everyday.</span></h1>
-      <p>Clear, practical guides to help you learn new skills, make confident decisions, and solve everyday problems — one useful article at a time.</p>
-      <div className="hero-actions"><Link className="btn btn-primary" href="/blog">Explore the latest guides <ArrowRight size={17}/></Link><Link className="btn btn-outline" href="/about">Our approach</Link></div>
-      <div className="hero-proof"><span>Practical, reader-first guides</span><span>Clear steps, less jargon</span><span>New topics regularly</span></div>
-    </div></section>
-    <section className="section"><div className="container">
-      <div className="section-top"><div><div className="kicker">Handpicked for you</div><h2>Useful reads to get started</h2><p className="section-subtitle">Straightforward guides you can put to use today.</p></div><Link href="/blog" className="text-link" style={{fontWeight:750,fontSize:14}}>All articles →</Link></div>
-      <div className="category-row">{categories.map(c=><Link key={c} className="category-pill" href={c==="All"?"/blog":`/category/${encodeURIComponent(c)}`}>{c}</Link>)}</div>
-      <div className="article-grid">{posts.map(post=><ArticleCard key={post.slug} post={post}/>)}</div>
-      <div style={{marginTop:30}}><AdSlot/></div>
-    </div></section>
-    <section className="section"><div className="container">
-      <div className="section-top"><div><div className="kicker">Free online utilities</div><h2>Get things done with simple tools</h2><p className="section-subtitle">Quick calculations and useful browser-based tools, with no account required.</p></div><Link href="/tools" className="text-link" style={{fontWeight:750,fontSize:14}}>Explore all tools →</Link></div>
-      <FeaturedTools/>
-    </div></section>
-    <section className="section section-muted"><div className="container"><div className="kicker">What you'll find here</div><h2>Useful, not overwhelming.</h2><p className="section-subtitle">We focus on clear explanations and actionable steps — not empty promises or complicated jargon.</p>
-      <div className="feature-strip">
-        <div className="feature"><div className="feature-icon"><BookOpenCheck size={25}/></div><h3>Learn something useful</h3><p>Technology, study skills, careers, and practical digital know-how explained in plain language.</p></div>
-        <div className="feature"><div className="feature-icon"><SearchCheck size={25}/></div><h3>Make informed choices</h3><p>Checklists and step-by-step guides that help you compare options and avoid common mistakes.</p></div>
-        <div className="feature"><div className="feature-icon"><Compass size={25}/></div><h3>Take the next step</h3><p>Every guide aims to leave you with a clear action you can try, verify, or improve.</p></div>
+    <section className="enterprise-hero">
+      <div className="hero-grid-pattern" aria-hidden="true" />
+      <div className="container enterprise-hero-inner">
+        <div className="hero-copy">
+          <div className="eyebrow"><span className="eyebrow-dot" /> PRACTICAL KNOWLEDGE. USEFUL TOOLS.</div>
+          <h1>Make your next step<br /><span>the smarter one.</span></h1>
+          <p className="hero-lead">Reliable how-to guides and straightforward online tools that help you solve everyday tasks with more clarity and less friction.</p>
+          <div className="hero-actions">
+            <Link className="btn btn-primary" href="/tools">Explore free tools <ArrowRight size={17}/></Link>
+            <Link className="btn btn-outline" href="/blog">Read practical guides <ArrowUpRight size={16}/></Link>
+          </div>
+          <div className="hero-assurance">
+            <span><CheckCircle2 size={16}/> Clear, step-by-step guidance</span>
+            <span><LockKeyhole size={16}/> Browser-based tools where noted</span>
+          </div>
+        </div>
+        <div className="hero-visual" aria-label="A simple workflow from question to useful answer">
+          <div className="hero-visual-top"><span className="status-dot" /> YOUR EVERYDAY KNOWLEDGE DESK <span className="hero-visual-label">SGD / WORKSPACE</span></div>
+          <div className="visual-question"><div className="visual-icon"><Search size={20}/></div><div><span className="visual-overline">START WITH A QUESTION</span><strong>What are you trying to solve?</strong></div></div>
+          <div className="visual-connector"><span /></div>
+          <div className="visual-options">
+            <Link href="/tools" className="visual-option"><span className="visual-option-icon blue"><Wrench size={19}/></span><span><strong>Use a tool</strong><small>Calculate, convert, create</small></span><ArrowUpRight size={17}/></Link>
+            <Link href="/blog" className="visual-option"><span className="visual-option-icon light"><BookOpen size={19}/></span><span><strong>Follow a guide</strong><small>Learn the steps and why</small></span><ArrowUpRight size={17}/></Link>
+          </div>
+          <div className="visual-foot"><ShieldCheck size={15}/> Practical information, designed around your task.</div>
+        </div>
       </div>
-    </div></section>
-    <section className="section"><div className="container"><div className="newsletter"><div><div className="kicker" style={{color:"#b7c5ff"}}>Keep exploring</div><h2 style={{marginBottom:8}}>Your next useful idea is one click away.</h2><p>Browse practical guides across technology, careers, business, and everyday how-to topics. We add and improve articles as we learn what readers need.</p></div><div className="hero-actions"><Link href="/blog" className="btn" style={{background:"#fff",color:"#15264a",whiteSpace:"nowrap"}}>Browse guides <ArrowRight size={16}/></Link><Link href="/tools" className="btn btn-outline" style={{whiteSpace:"nowrap"}}>Use free tools</Link></div></div></div></section>
+      <div className="container hero-metrics">
+        <div><strong>{toolCount}</strong><span>Free online tools</span></div>
+        <div><strong>4</strong><span>Simple ways to explore</span></div>
+        <div><strong>Always</strong><span>Clear instructions first</span></div>
+        <div className="metrics-note">Built to make useful information easier to act on.</div>
+      </div>
+    </section>
+
+    <section className="section section-tools-home">
+      <div className="container">
+        <div className="section-top"><div><div className="kicker">A good place to start</div><h2>Tools for everyday tasks</h2><p className="section-subtitle">Get a result quickly, with clear inputs and explanations when you need them.</p></div><Link href="/tools" className="text-link section-action">Browse all tools <ArrowRight size={16}/></Link></div>
+        <FeaturedTools/>
+        <div className="home-inline-note"><Zap size={17}/><span>Choose a tool, enter your details, and review the result before you use it.</span><Link href="/tools">How tools work <ArrowRight size={14}/></Link></div>
+      </div>
+    </section>
+
+    <section className="section section-workflow">
+      <div className="container">
+        <div className="workflow-heading"><div className="kicker">A clear path forward</div><h2>From question to next step.</h2><p className="section-subtitle">We organize information around what you came to do—not around jargon or clutter.</p></div>
+        <div className="workflow-grid">
+          <div className="workflow-card"><span className="workflow-number">01</span><div className="workflow-icon"><Search size={21}/></div><h3>Find what you need</h3><p>Browse focused categories or search for a specific tool, topic, or question.</p><Link href="/tools">Explore categories <ArrowRight size={14}/></Link></div>
+          <div className="workflow-card"><span className="workflow-number">02</span><div className="workflow-icon"><FileText size={21}/></div><h3>Understand the process</h3><p>Use plain-language instructions, examples, and practical context to guide your decisions.</p><Link href="/blog">Read the guides <ArrowRight size={14}/></Link></div>
+          <div className="workflow-card"><span className="workflow-number">03</span><div className="workflow-icon"><CheckCircle2 size={21}/></div><h3>Act with confidence</h3><p>Review your result, check important assumptions, and choose the next useful action.</p><Link href="/about">Our approach <ArrowRight size={14}/></Link></div>
+        </div>
+      </div>
+    </section>
+
+    <section className="section section-muted">
+      <div className="container">
+        <div className="section-top"><div><div className="kicker">The knowledge library</div><h2>Guides made for real questions.</h2><p className="section-subtitle">Explore practical explanations across technology, AI, education, careers, business, and everyday tasks.</p></div><Link href="/blog" className="text-link section-action">View all articles <ArrowRight size={16}/></Link></div>
+        {posts.length ? <div className="article-grid home-article-grid">{posts.map(post=><ArticleCard key={post.slug} post={post}/>)}</div> : <div className="empty-state"><h3>New guides are on the way</h3><p>Explore our tools while the library grows.</p><Link href="/tools" className="btn btn-outline">Explore tools</Link></div>}
+        <div className="home-article-footer"><span><BookOpen size={17}/> Clear explanations, practical examples, and useful next steps.</span><Link href="/blog" className="text-link">Explore the library <ArrowRight size={15}/></Link></div>
+        <div style={{marginTop:32}}><AdSlot/></div>
+      </div>
+    </section>
+
+    <section className="section">
+      <div className="container trust-panel">
+        <div className="trust-copy"><div className="kicker">Designed around usefulness</div><h2>Good information should feel clear.</h2><p>SmartGuideDaily brings tools and practical guides together in one place. We aim to explain what a tool does, how to use it, and where its limits matter.</p><Link href="/editorial-policy" className="btn btn-primary">How we approach content <ArrowRight size={16}/></Link></div>
+        <div className="trust-points">
+          <div><span><CheckCircle2 size={18}/></span><section><strong>Instructions before complexity</strong><p>Each experience should help you understand what to do next.</p></section></div>
+          <div><span><ShieldCheck size={18}/></span><section><strong>Transparent limitations</strong><p>Calculations are estimates where appropriate, not professional advice.</p></section></div>
+          <div><span><Sparkles size={18}/></span><section><strong>Useful over exaggerated</strong><p>We focus on practical help rather than unsupported promises.</p></section></div>
+        </div>
+      </div>
+    </section>
+
+    <section className="section home-bottom-cta">
+      <div className="container">
+        <div className="bottom-cta-inner"><div><div className="kicker">Ready when you are</div><h2>Start with the task in front of you.</h2><p>Find a useful tool or follow a guide at your own pace.</p></div><div className="hero-actions"><Link href="/tools" className="btn btn-white">Explore free tools <ArrowRight size={16}/></Link><Link href="/blog" className="btn btn-ghost-white">Browse guides</Link></div></div>
+      </div>
+    </section>
   </>;
 }

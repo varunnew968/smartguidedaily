@@ -25,3 +25,18 @@ This update is intended to be applied to the existing source repository connecte
 - All 16 tool slugs have matching runner cases.
 - The ZIP structure will be checked after packaging.
 - A full dependency installation and Next.js production build could not be run in the build environment because the npm registry request failed with a DNS/network error (`EAI_AGAIN`). Run the production build locally before deploying.
+
+
+## Enterprise UI refresh (October 2026)
+
+This build refreshes the visual system to a restrained enterprise style: white surfaces, navy typography, and accessible blue accents. The homepage now communicates a clearer task-first workflow (choose a tool or guide, understand the steps, then act), presents the existing tools and articles more clearly, and adds responsive trust/content sections.
+
+Key implementation notes:
+- Existing Next.js App Router routes and page slugs are retained.
+- Existing tool logic and article content/data sources are retained.
+- Homepage tool cards link to existing `/tools/[slug]` routes.
+- The tools directory accepts a `?q=` query to prefill its search field.
+- Metadata, Google verification, AdSense loader, `/ads.txt`, robots, and sitemap files are retained.
+- UI copy avoids unsupported claims about company age, user counts, or results.
+
+Before deploying, run `npm install` and `npm run build` locally. Confirm the production homepage, a calculator, a blog post, `/sitemap.xml`, and `/ads.txt` after deployment.
