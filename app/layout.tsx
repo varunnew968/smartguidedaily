@@ -33,8 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName,
     title: "SmartGuideDaily",
-    description:
-      "Practical guides for smarter everyday decisions.",
+    description: "Practical guides for smarter everyday decisions.",
     url: siteUrl,
   },
 
@@ -45,6 +44,10 @@ export const metadata: Metadata = {
 
   verification: {
     google: "IIssjx62FOdmPclAh-lTxC8wq4CHQpGo18p7Ys8NPTA",
+  },
+
+  other: {
+    "google-adsense-account": "ca-pub-6633143653612883",
   },
 };
 
