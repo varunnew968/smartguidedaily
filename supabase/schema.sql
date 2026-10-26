@@ -11,6 +11,7 @@ create table if not exists public.posts (
   updated_at timestamptz not null default now(),
   read_minutes integer not null default 1,
   cover_label text not null default 'Guide',
+  cover_image_url text,
   content text not null,
   status text not null default 'draft' check (status in ('draft','published')),
   seo_title text,

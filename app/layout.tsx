@@ -20,11 +20,11 @@ const adsenseClient =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SmartGuideDaily — Practical Guides & Free Online Tools",
+    default: "SmartGuideDaily — Know More. Do More.",
     template: "%s | SmartGuideDaily",
   },
   description:
-    "Helpful, practical guides and free online tools for technology, AI, careers, money, business, and everyday tasks.",
+    "Discover practical guides, useful digital tools, and clear explanations across technology, AI, careers, business, and everyday life.",
   applicationName: siteName,
   alternates: {
     canonical: "/",
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName,
-    title: "SmartGuideDaily",
+    title: "SmartGuideDaily — Know More. Do More.",
     description:
-      "Practical guides and free tools for smarter everyday decisions.",
+      "Practical guides, useful tools, and clear explanations to help you learn and solve everyday problems.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SmartGuideDaily",
-    description: "Practical guides and free online tools.",
+    title: "SmartGuideDaily — Know More. Do More.",
+    description: "Practical guides, useful digital tools, and clear explanations.",
   },
   robots: {
     index: true,

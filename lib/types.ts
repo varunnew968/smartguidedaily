@@ -9,6 +9,7 @@ export type Post = {
   updated_at?: string;
   read_minutes: number;
   cover_label: string;
+  cover_image_url?: string | null;
   content: string;
   status: "draft" | "published";
   seo_title?: string;

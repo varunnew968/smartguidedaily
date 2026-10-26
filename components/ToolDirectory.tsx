@@ -7,6 +7,8 @@ import {
   Landmark, ListChecks, Percent, Receipt, Ruler, Search, ShieldCheck, Tag, Thermometer, Type
 } from "lucide-react";
 import { toolCategories, type SiteTool } from "@/lib/tools";
+import { getToolVisual } from "@/lib/visuals";
+import EditorialImage from "@/components/EditorialImage";
 
 const iconMap: Record<string, ComponentType<{ size?: number }>> = {
   activity: Activity, "calendar-days": CalendarDays, percent: Percent, "receipt-text": Receipt,
@@ -39,7 +41,8 @@ export default function ToolDirectory({ tools, initialQuery = "" }: ToolDirector
     <p className="small-muted" aria-live="polite">Showing {filtered.length} of {tools.length} tools</p>
     {filtered.length ? <div className="tool-grid">{filtered.map((tool) => {
       const Icon = iconMap[tool.icon] || Activity;
-      return <Link href={`/tools/${tool.slug}`} key={tool.slug} className="tool-card">
+      return <Link href={`/tools/${tool.slug}`} key={tool.slug} className="tool-card editorial-tool-directory-card">
+        <span className="tool-directory-card-image"><EditorialImage visual={getToolVisual(tool.category)} sizes="(max-width: 520px) 100vw, (max-width: 900px) 50vw, 25vw"/><span/></span>
         <span className="tool-icon"><Icon size={22}/></span>
         <span className="tool-card-category">{tool.category}</span>
         <strong>{tool.name}</strong>
